@@ -1,0 +1,82 @@
+// ArduinoJson - https://arduinojson.org
+// Copyright Benoit Blanchon 2014-2021
+// MIT License
+//
+// This example shows how to generate a JSON document with ArduinoJson.
+//
+// https://arduinojson.org/v6/example/generator/
+
+#include <ArduinoJson.h>
+
+#define serialBand 115200
+void setup() {
+  // Initialize Serial port
+  Serial.begin(serialBand);
+  while (!Serial) continue;
+
+  // Allocate the JSON document
+  //
+  // Inside the brackets, 200 is the RAM allocated to this document.
+  // Don't forget to change this value to match your requirement.
+  // Use https://arduinojson.org/v6/assistant to compute the capacity.
+  StaticJsonDocument<200> doc;
+
+  // StaticJsonObject allocates memory on the stack, it can be
+  // replaced by DynamicJsonDocument which allocates in the heap.
+  //
+  // DynamicJsonDocument  doc(200);
+
+  // Add values in the document
+  //
+  doc["sensor"] = "gps";
+  doc["date"] = "2021-07-28";
+  doc["time"] = "12:23:12";
+
+  // Add an array.
+  //
+  JsonArray data = doc.createNestedArray("data");
+  data.add(48.756080);
+  data.add(2.302038);
+
+  Serial.print("pre-serialize: ");  Serial.println(doc);
+  // Generate the minified JSON and send it to the Serial port.
+  //
+  serializeJson(doc, Serial);
+  Serial.print("Serialize: "); Serial.println(doc);
+  
+  // The above line prints:
+  // {"sensor":"gps","time":1351824120,"data":[48.756080,2.302038]}
+
+  // Start a new line
+  Serial.println("Pretty: ");
+
+  // Generate the prettified JSON and send it to the Serial port.
+  //
+  serializeJsonPretty(doc, Serial);
+  // The above line prints:
+  // {
+  //   "sensor": "gps",
+  //   "time": 1351824120,
+  //   "data": [
+  //     48.756080,
+  //     2.302038
+  //   ]
+  // }
+}
+
+void loop() {
+  // not used in this example
+}
+
+// See also
+// --------
+//
+// https://arduinojson.org/ contains the documentation for all the functions
+// used above. It also includes an FAQ that will help you solve any
+// serialization problem.
+//
+// The book "Mastering ArduinoJson" contains a tutorial on serialization.
+// It begins with a simple example, like the one above, and then adds more
+// features like serializing directly to a file or an HTTP request.
+// Learn more at https://arduinojson.org/book/
+// Use the coupon code TWENTY for a 20% discount ❤❤❤❤❤
