@@ -1,8 +1,12 @@
-#include <Wire.h>            // Arduino IDE のI2Cライブラリ
-#include <LcdCore.h>         // LCDコアライブラリ
-#include <LCD_ACM1602NI.h>   // 秋月I2C液晶用のI/Oライブラリ
+#include <LiquidCrystal_I2C.h>
+// #include <Wire.h>            // Arduino IDE のI2Cライブラリ
+// #include <LcdCore.h>         // LCDコアライブラリ
+// #include <LCD_ACM1602NI.h>   // 秋月I2C液晶用のI/Oライブラリ
 
-LCD_ACM1602NI lcd(0xa0); // 0xa0はI2Cアドレス
+// LiquidCrystal_I2C lcd(0x27,16,2);   // 半田ブリッジ -> 1 1 1 (All Open)
+LiquidCrystal_I2C lcd(0x27, 20, 4); // 半田ブリッジ -> 1 1 1 (All Open)
+
+// LCD_ACM1602NI lcd(0xa0); // 0xa0はI2Cアドレス
 
 #define START_PIN 2
 #define STOP_PIN 3
@@ -22,11 +26,13 @@ void setup() {
   pinMode(RESET_PIN, INPUT);
 
   //LCD設定
-  lcd.begin(16, 2);//横0-15、縦0-1
-  lcd.print("set_up");
+  // lcd.begin(16, 2);//横0-15、縦0-1
+  // lcd.print("set_up");
+  lcd.init(); 
+  lcd.backlight();
 
   //シリアル通信設定
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("start");
 
   //タイム計測スタート
