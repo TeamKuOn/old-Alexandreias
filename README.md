@@ -27,5 +27,6 @@
 ```
 user@MacBook:~/workspace/software-parts$ git branch
   master
+  develop
 * hashimoto
 ```
