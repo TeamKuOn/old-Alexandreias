@@ -1,4 +1,6 @@
 /*
+  entryPoint.cpp
+
   SD card datalogger
 
   This example shows how to log data from three analog sensors
@@ -27,6 +29,7 @@
 
 */
 
+#include "std_arduino.hpp"
 #include <SPI.h>
 #include <SD.h>
 
@@ -83,11 +86,3 @@ void loop() {
 
   delay(1000);
 }
-
-
-
-
-
-
-
-
