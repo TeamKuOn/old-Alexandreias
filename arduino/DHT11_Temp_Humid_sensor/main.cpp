@@ -20,7 +20,7 @@ void setup() {
 
     dht.begin();
 
-    xMsec = xTimerCreate("DHT11", pdMS_TO_TICKS(100), pdTRUE, (void *)0, xDHT11Callback);
+    xMsec = xTimerCreate("DHT11", pdMS_TO_TICKS(1000), pdTRUE, (void *)0, xDHT11Callback);
     xTimerStart(xMsec, 0);
 }
 
