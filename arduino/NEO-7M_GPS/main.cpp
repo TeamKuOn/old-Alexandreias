@@ -1,7 +1,7 @@
 /*
  * main.cpp
  */
-#include "std_arduino.hpp"
+#include "stdArduino.hpp"
 #include <TinyGPS++.h>
 
 static const uint32_t GPSBand = 9600;

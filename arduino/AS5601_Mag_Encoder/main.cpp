@@ -9,7 +9,7 @@
               &  https://www.mouser.com/datasheet/2/588/AS5601_DS000395_3-00-1512703.pdf 
 */
 
-#include "std_arduino.hpp"
+#include "stdArduino.hpp"
 #include <Arduino_FreeRTOS.h>
 #include <stdint.h>
 #include <Wire.h>

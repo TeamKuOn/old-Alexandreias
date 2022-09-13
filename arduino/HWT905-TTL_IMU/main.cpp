@@ -1,9 +1,20 @@
 /*
  * main.cpp
  */
-#include "std_arduino.hpp"
+#include "stdArduino.hpp"
+#include <Arduino_FreeRTOS.h>
 #include <Wire.h>
 #include <JY901.h>
+
+void getIMUData(void *pvParameters);
+
+void getIMUData(void *pvParameters){
+  (void)pvParameters;
+  for(;;){
+
+  }
+
+}
 
 void setup() {
     Serial.begin(115200);
