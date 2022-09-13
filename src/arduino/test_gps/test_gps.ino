@@ -10,70 +10,77 @@ static const uint32_t GPSBand = 9600;
 // The TinyGPS++ object
 // TinyGPSPlus gps;
 TinyGPSPlus neo6m;
-#define GpsSerial Serial1     // Tx1(18), RX(19)
+#define GpsSerial Serial1 // Tx1(18), RX(19)
 // #include <SoftwareSerial.h>
 // #define RX1 19
 // #define TX1 18
 // SoftwareSerial GpsSerial (RX1, TX1);
 
 // structure setting
-struct gpsNeo6mJson {
-  char Date[30];
-  char Time[30];
-  char Latitude[30];
-  char Longitude[30];
-  char Altitude[30];
-  char HDOP[30];
+struct gpsNeo6mJson
+{
+    char Date[30];
+    char Time[30];
+    char Latitude[30];
+    char Longitude[30];
+    char Altitude[30];
+    char HDOP[30];
 };
-
-struct gpsNeo6mJson GpsJson;
 
 void dataAsFloatToChar(char *pointer, char jsonKey, double val, bool valid, int len, int decimal);
 
-void getSensorsData() {
-  // get data form GPS NEO-6M Sensor
-  dataAsFloatToChar(GpsJson.Latitude, "latitude", neo6m.location.lat(), neo6m.location.isValid(), 10, 6);    // get latitude
-  // dataAsFloatToChar();    // get longitude
-  // dataAsFloatToChar();    // get altitude 
+void getSensorsData()
+{
+    // get data form GPS NEO-6M Sensor
+    dataAsFloatToChar(GpsJson.Latitude, "latitude", neo6m.location.lat(), neo6m.location.isValid(), 10, 6); // get latitude
+                                                                                                            // dataAsFloatToChar();    // get longitude
+                                                                                                            // dataAsFloatToChar();    // get altitude
 }
 
-void setup() {
-  Serial.begin(115200);
-  GpsSerial.begin(GPSBand);
-  Serial.println("GPS test....");
+void setup()
+{
+    Serial.begin(115200);
+    GpsSerial.begin(GPSBand);
+    Serial.println("GPS test....");
 
+    struct gpsNeo6mJson GpsJson;
 }
 
-void loop() {
-  // GpsSerial.listen();
-  // delay(1000);
-  while (GpsSerial.available() > 0) {
-    if (neo6m.encode(GpsSerial.read())) {
-      Serial.println("---------------------------------------------------");
-      // getSensorsData();
+void loop()
+{
+    // GpsSerial.listen();
+    // delay(1000);
+    while (GpsSerial.available() > 0)
+    {
+        if (neo6m.encode(GpsSerial.read()))
+        {
+            Serial.println("---------------------------------------------------");
+            // getSensorsData();
 
-      // Serial.print("Result: ");   Serial.println(GpsJson.Latitude);
-      // Serial.print("Result: ");   Serial.println(GpsJson.Altitude);
+            // Serial.print("Result: ");   Serial.println(GpsJson.Latitude);
+            // Serial.print("Result: ");   Serial.println(GpsJson.Altitude);
 
-      Serial.println(neo6m.location.lat(), 8);
-      Serial.println(neo6m.location.lng(), 8);
-      Serial.println(neo6m.altitude.kilometers());
-      Serial.println(neo6m.hdop.value()); 
-      dataAsBytToChar(GpsJson.HDOP, "HDOP", neo6m.hdop.value(), neo6m.hdop.isValid());    // get HDOP
-      Serial.println(GpsJson.HDOP);
-      // GpsJson.Latitude = neo6m.location.lat();
-      // Serial.println(latitude);
-      // Serial.println(neo6m.location.lat(), 6);
-      // Serial.println(neo6m.location.isValid());
-      // Serial.println(neo6m.location.lat(), 6);
-      // Serial.println(neo6m.location.lng(), 6);
+            Serial.println(neo6m.location.lat(), 8);
+            Serial.println(neo6m.location.lng(), 8);
+            Serial.println(neo6m.altitude.kilometers());
+            Serial.println(neo6m.hdop.value());
+            dataAsBytToChar(GpsJson.HDOP, "HDOP", neo6m.hdop.value(), neo6m.hdop.isValid()); // get HDOP
+            Serial.println(GpsJson.HDOP);
+            // GpsJson.Latitude = neo6m.location.lat();
+            // Serial.println(latitude);
+            // Serial.println(neo6m.location.lat(), 6);
+            // Serial.println(neo6m.location.isValid());
+            // Serial.println(neo6m.location.lat(), 6);
+            // Serial.println(neo6m.location.lng(), 6);
 
-    // delay(500);
-    } else {
-      Serial.println("GPS signal is not Valid...");
+            // delay(500);
+        }
+        else
+        {
+            //      Serial.println("GPS signal is not Valid...");
+        }
     }
-  }
-  Serial.println("Loop()");
+    //  Serial.println("Loop()");
 }
 
 /*
@@ -96,7 +103,7 @@ void loop()
     (unsigned long)TinyGPSPlus::distanceBetween(
       gps.location.lat(),
       gps.location.lng(),
-      LONDON_LAT, 
+      LONDON_LAT,
       LONDON_LON) / 1000;
   printInt(distanceKmToLondon, gps.location.isValid(), 9);
 
@@ -104,7 +111,7 @@ void loop()
     TinyGPSPlus::courseTo(
       gps.location.lat(),
       gps.location.lng(),
-      LONDON_LAT, 
+      LONDON_LAT,
       LONDON_LON);
 
   printFloat(courseToLondon, gps.location.isValid(), 7, 2);
@@ -117,7 +124,7 @@ void loop()
   printInt(gps.sentencesWithFix(), true, 10);
   printInt(gps.failedChecksum(), true, 9);
   Serial.println();
-  
+
   smartDelay(1000);
 
   if (millis() > 5000 && gps.charsProcessed() < 10)
@@ -129,7 +136,7 @@ void loop()
 static void smartDelay(unsigned long ms)
 {
   unsigned long start = millis();
-  do 
+  do
   {
     while (ss.available())
       gps.encode(ss.read());
@@ -164,7 +171,7 @@ static void printInt(unsigned long val, bool valid, int len)
   sz[len] = 0;
   for (int i=strlen(sz); i<len; ++i)
     sz[i] = ' ';
-  if (len > 0) 
+  if (len > 0)
     sz[len-1] = ' ';
   Serial.print(sz);
   smartDelay(0);
@@ -182,7 +189,7 @@ static void printDateTime(TinyGPSDate &d, TinyGPSTime &t)
     sprintf(sz, "%02d/%02d/%02d ", d.month(), d.day(), d.year());
     Serial.print(sz);
   }
-  
+
   if (!t.isValid())
   {
     Serial.print(F("******** "));
